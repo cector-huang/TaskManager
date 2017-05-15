@@ -18,7 +18,7 @@ public class ThreadPool {
     public static void main(String[] args) {
         // TODO code application logic here
         //创建具有3个线程线程池
-        MultiThread t = MultiThread.getThreadPool(3);
+        MultiThread t = MultiThread.getThreadPool(100);
         t.execute(new Runnable[] { new Task(), new Task(), new Task()});
         t.execute(new Runnable[] { new Task(), new Task(), new Task()});
         System.out.println(t);

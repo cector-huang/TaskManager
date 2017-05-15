@@ -22,7 +22,7 @@ public final class MultiThread {
     //未处理的线程的个数
     private static volatile int finished_num = 0;
     //用于缓冲的任务队列，List非线程安全
-    private List<Runnable> taskQueue = new LinkedList<Runnable>();
+    private final List<Runnable> taskQueue = new LinkedList<Runnable>();
     //线程池管理器的单例
     private static MultiThread multiThread;
     
@@ -38,8 +38,9 @@ public final class MultiThread {
         MultiThread.work_num = work_num;
         //线程池中创建初始线程
         workThread = new WorkThread[work_num];
-        for(int i = 0; i < work_num; work_num++)
+        for(int i = 0; i < work_num; ++i)
         {
+            System.out.println(i);
             workThread[i] = new WorkThread();
             workThread[i].start();//开启线程池中的线程
         }
