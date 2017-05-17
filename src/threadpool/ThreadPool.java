@@ -6,37 +6,59 @@
 
 package threadpool;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 /**
  *
  * @author cector
  */
 public class ThreadPool {
+    
+    Logger LOGGER;
+
+    public ThreadPool() {
+        this.LOGGER = Logger.getLogger(ThreadPool.class);
+        LOGGER.info("begin to create instance!");
+    }
+    
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        
+        //启动数据库监控线程
+        init();
+        Runnable dbmonitor = new DBMonitor();
+        Thread monitor = new Thread(dbmonitor, "DBMonitor");
+        monitor.setDaemon(false);//非守护线程
+        monitor.start();//开始监控数据库，如果数据库中有任何变化就添加到任务队列
+        
         //创建具有3个线程线程池
-        MultiThread t = MultiThread.getThreadPool(100);
-        t.execute(new Runnable[] { new Task(), new Task(), new Task()});
-        t.execute(new Runnable[] { new Task(), new Task(), new Task()});
-        System.out.println(t);
-        t.destory();//销毁线程，不然这个进程不会结束
-        System.out.println(t);
+        //MultiThread t = MultiThread.getThreadPool(100);
+        //t.execute(new Runnable[] { new Task(), new Task(), new Task()});
+        //t.execute(new Runnable[] { new Task(), new Task(), new Task()});
+        //System.out.println(t);
+        //t.destory();//销毁线程，不然这个进程不会结束
+        //System.out.println(t);
     }
     
-    
-    static class Task implements Runnable
+    private static void init()
     {
-        private static volatile int i = 1;
-        
-        //执行任务
-        
-        @Override
-        public void run()
+        String url = ThreadPool.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        System.out.println(url);
+        String path = "";
+        if(url.endsWith(".jar"))
         {
-            System.out.println("任务" + (i++) + "完成");
+            path = url.substring(0, url.lastIndexOf("/")+1);
+        }
+        if(path != "" && !path.isEmpty())
+        {
+            path += "config/log4j.properties";
+            System.out.println(path);
+            PropertyConfigurator.configure(path);
         }
     }
     

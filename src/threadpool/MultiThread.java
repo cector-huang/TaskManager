@@ -85,8 +85,9 @@ public final class MultiThread {
             for(Runnable t: task)
             {
                 taskQueue.add(t);
+                taskQueue.notify();
             }
-            taskQueue.notify();
+            
         }
     }
     
