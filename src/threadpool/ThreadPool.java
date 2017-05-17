@@ -35,14 +35,6 @@ public class ThreadPool {
         Thread monitor = new Thread(dbmonitor, "DBMonitor");
         monitor.setDaemon(false);//非守护线程
         monitor.start();//开始监控数据库，如果数据库中有任何变化就添加到任务队列
-        
-        //创建具有3个线程线程池
-        //MultiThread t = MultiThread.getThreadPool(100);
-        //t.execute(new Runnable[] { new Task(), new Task(), new Task()});
-        //t.execute(new Runnable[] { new Task(), new Task(), new Task()});
-        //System.out.println(t);
-        //t.destory();//销毁线程，不然这个进程不会结束
-        //System.out.println(t);
     }
     
     private static void init()
