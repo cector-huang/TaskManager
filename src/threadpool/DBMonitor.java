@@ -38,8 +38,9 @@ public class DBMonitor implements Runnable{
         //查询数据库记录，如果查询到最新数据就把数据库中的新任务添加到任务队列
         String str = "这是第" + (i++) + "次查询并处理数据库";
         LOGGER.info(str);
-        System.out.println(str);
-        MultiThread.getThreadPool(100).execute(new Runnable[] { new Task(), new Task(), new Task(), new Task()});
+        //初始化100个线程的线程池
+        //每次操作就添加4个任务到线程池
+        MultiThread.getThreadPool(3).execute(new Runnable[] { new Task(), new Task(), new Task(), new Task()});
     }
     
     private void init()

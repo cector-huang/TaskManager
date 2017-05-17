@@ -40,7 +40,6 @@ public final class MultiThread {
         workThread = new WorkThread[work_num];
         for(int i = 0; i < work_num; ++i)
         {
-            System.out.println(i);
             workThread[i] = new WorkThread();
             workThread[i].start();//开启线程池中的线程
         }
@@ -74,6 +73,7 @@ public final class MultiThread {
         synchronized(taskQueue)
         {
             taskQueue.add(task);
+            //添加一个任务就通知一下，否则无法激活立即激活线程，可能所有的任务都被一个线程处理了
             taskQueue.notify();
         }
     }
@@ -94,7 +94,7 @@ public final class MultiThread {
     //执行多个任务
     public void execute(List<Runnable> task)
     {
-        synchronized(taskQueue)
+        synchronized(taskQueue)//同步操作
         {
             for(Runnable t: task)
             {
@@ -169,6 +169,8 @@ public final class MultiThread {
                     while(isRunning && taskQueue.isEmpty())
                     {
                         try{
+                            //使用wait操作，会释放线程锁，要不计时结束，或者靠notify直接唤醒
+                            //wait是object方法，所有对象均可使用
                             taskQueue.wait(20);
                         }
                         catch(InterruptedException e)
